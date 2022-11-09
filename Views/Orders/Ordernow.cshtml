@@ -1,0 +1,117 @@
+﻿@model IEnumerable<pizzaCube.Models.Pizza>
+@{
+}
+<section class="w3l-food" id="food">
+    <div class="foods1 py-5">
+        <div class="container py-lg-5 py-md-4">
+            <div class="title-content text-center">
+                <h6 class="sub-title">ORDER</h6>
+                <h3 class="title-big">Our Delicious Pizza</h3>
+                <div id="selector" class="container">
+                    <select class="form-control input-lg" name="veganSelect">
+                        <option value="Veg">Veg</option>
+                        <option value="Non-Veg">Non-Veg</option>
+                        <option selected value="both">Both</option>
+                    </select>
+                    <i class="fa fa-filter"></i>
+                </div>
+            </div>
+
+            <div class="foods1-content mt-lg-5 mt-4 mb-sm-0 mb-4">
+                <div class="row">
+                    <section style="display: contents;" id="vegan">
+                        @foreach (var item in Model.Where(x => x.PizzaType.Trim() == "Veg").ToList())
+                        {
+                            <div class="item col-sm-6 col-md-4 col-lg-3 mt-4">
+                                <div class="d-grid food-info">
+                                    <div class="column">
+                                        <span><img style="width: 10%;" src="/images/vegan.png" /><h4 class="name-pos"><a href="#url">@Html.DisplayFor(modelItem => item.PizzaName)</a></h4></span>
+                                        <p>@item.PizzaSpecialty.Substring(0, Math.Min(item.PizzaSpecialty.Length, 47))...</p>
+                                        <h5>₹ @Html.DisplayFor(modelItem => item.PizzaPrice)</h5>
+                                        <a asp-action="Placeorder" asp-controller="Orders" asp-route-id="@item.PizzaId" class="btn-style btn-primary btn mt-4">Order Online</a>
+                                        <a asp-action="Placeorder" asp-controller="Orders" asp-route-id="@item.PizzaId"><img src="/images/p1.jpg" alt="" class="img-fluid radius-image mt-4" /></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                    <section style="display: contents;" id="non-vegan">
+                        @foreach (var item in Model.Where(x => x.PizzaType.Trim() == "Non-Veg").ToList())
+                        {
+
+                            <div class="item col-sm-6 col-md-4 col-lg-3 mt-4">
+                                <div class="d-grid food-info">
+                                    <div class="column">
+                                        <span><img style="width: 10%;" src="/images/NonVegan.png" /><h4 class="name-pos"><a href="#url">@Html.DisplayFor(modelItem => item.PizzaName)</a></h4></span>
+                                        <p>@item.PizzaSpecialty.Substring(0, Math.Min(item.PizzaSpecialty.Length, 47))...</p>
+                                        @* <p>@Html.DisplayFor(modelItem => item.PizzaSpecialty)</p>*@
+                                        <h5>₹ @Html.DisplayFor(modelItem => item.PizzaPrice)</h5>
+                                        <a asp-action="Placeorder" asp-controller="Orders" asp-route-id="@item.PizzaId" class="btn-style btn-primary btn mt-4">Order Online</a>
+                                        <a asp-action="Placeorder" asp-controller="Orders" asp-route-id="@item.PizzaId"><img src="/images/p2.jpg" alt="" class="img-fluid radius-image mt-4" /></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<style>
+    #selector select option {
+        color: #333;
+        position: relative;
+        top: 5px;
+    }
+
+    #selector {
+        margin: 5px 10%;
+        width: 15%;
+        position: relative;
+        left: 75%;
+    }
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+    }
+
+        select.input-lg {
+            height: 50px !important;
+            line-height: 25px !important;
+        }
+
+        select + i.fa {
+            float: right;
+            margin-top: -32px;
+            margin-right: 9px;
+            pointer-events: none;
+            background-color: #FFF padding-right: 5px;
+        }
+</style>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('select').on('change', function () {
+            if (this.value == 'Veg') {
+                $("#non-vegan").hide(1000);
+                $("#vegan").show(1000);
+            } else if (this.value == 'Non-Veg') {
+                $("#non-vegan").show(1000);
+                $("#vegan").hide(1000);
+            } else {
+
+                $("#non-vegan").show(1000);
+                $("#vegan").show(1000);
+            }
+        });
+    });
+</script>

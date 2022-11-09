@@ -1,0 +1,84 @@
+﻿@model IEnumerable<pizzaCube.Models.viewModel.OrderViewModel>
+@{
+ 
+}
+<div class="container">
+    <div class="title-content text-left">
+        <h3 class="title-big">Today's Order</h3>
+    </div>
+<table class="table" id="todayOrder">
+    <thead>
+        <tr>
+            <th>Order Date</th>
+            <th>Order No.</th>
+            <th>Pizza Name</th>
+            <th>Pizza Type</th>
+            <th>Quantity</th>
+            <th>Status</th>
+
+        </tr>
+    </thead>
+    <tbody>
+            @*@foreach (var item in Model.Where(x => x.OrderNumber == 0000))*@
+        @foreach (var item in Model.Where(x => x.OrderDate == DateTime.Today))
+        {
+            <tr>
+                <td>@item.OrderDate</td>
+                <td>@item.OrderNumber</td>
+                <td>@item.pizzaName</td>
+                <td>@item.pizzaType</td>
+                <td>@item.Qty</td>
+              <td>@item.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<span id="exception" style="color:red"> No orders today! </span>
+<div class="title-content text-left">
+    <h3 class="sub-title">Order History</h3>
+</div>
+<table class="table" id="orderHistory"> 
+    <thead>
+        <tr>
+            <th>Order Date</th>
+            <th>Order No.</th>
+            <th>Pizza Name</th>
+            <th>Pizza Type</th>
+            <th>Quantity</th>
+            <th>Status</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(x => x.OrderDate != DateTime.Today))
+        {
+            <tr>
+                <td>@item.OrderDate</td>
+                <td>@item.OrderNumber</td>
+                <td>@item.pizzaName</td>
+                <td>@item.pizzaType</td>
+                <td>@item.Qty</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+    <span id="exceptionHistory" style="color:red"> No orders history! </span>
+</div>
+
+    <script>
+    $(document).ready(function () {
+        $("#exception").hide();
+        $("#exceptionHistory").hide();
+        if ($('#todayOrder tr').length == 1) {
+            $("#exception").show(1000);
+
+        }
+
+        if ($('#orderHistory tr').length == 1) {
+            $("#exceptionHistory").show(1000);
+
+        }
+
+    });
+    </script>

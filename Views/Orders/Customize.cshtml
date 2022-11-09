@@ -1,0 +1,448 @@
+﻿@model IEnumerable<pizzaCube.Models.Pizza>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+<form id="placeorderForm" method="post" action="Placeorder">
+    <div class="container">
+        <div class="card">
+            <div class="container-fliud">
+                <div class="wrapper row">
+                    <div class="preview col-md-6">
+                        <div class="preview-pic tab-content">
+                            <div class="tab-pane active" id="pic-1">
+                                <img src="https://api.pizzahut.io/v1/content/en-in/in-1/images/pizza/chicken-supreme.6d53f104f071d304a47440f2fffa7378.1.jpg" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="details col-md-6">
+                        @foreach (var i in Model)
+                        {
+                            <h3 class="product-title"> @i.PizzaName</h3>
+                            <p class="product-description"> @i.PizzaSpecialty</p>
+                            <h4 class="price"> price: ₹ <span> @i.PizzaPrice</span></h4>
+                            <input type="hidden" name="PizzaId" value="@i.PizzaId" />
+                        }
+
+                        <div className="form-group">
+                            <label><span>Quantity</span></label>
+                            <input type="number" class="form-control" id="Qty" name="Qty" placeholder="No. of pizza" value="1" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label><span>Select your Crust</span></label>
+                            <select name="CrustId" class="form-control">
+                                @foreach (var i in ViewBag.Crust)
+                                {
+                                    <option value="@i.CrustId">@i.CrustName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label> <span>Number of Pizza Slices </span></label>
+                            <ul>
+                                <li>
+                                    <input type="radio" name="NoOfSlices" id="myCheckbox6" value="4" />
+                                    <label class="label" for="myCheckbox6"><img class="slice" src="~/images/4slice.png" /> </label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="NoOfSlices" id="myCheckbox7" value="6" />
+                                    <label class="label" for="myCheckbox7"><img class="slice" src="~/images/6slice.png" /></label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="NoOfSlices" id="myCheckbox8" value="8" />
+                                    <label class="label" for="myCheckbox8"><img class="slice" src="~/images/8slice.png" /></label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <span>Select Toppings </span>
+                        </label>
+                        <ul>
+                            @foreach (var item in ViewBag.toppings)
+                            {
+                                <li>
+
+                                    <input type="checkbox" name="ToppingsId[]" id="myCheckbox+@item.ToppingsId" value="@item.ToppingsId" />
+                                    <label class="label" for="myCheckbox+@item.ToppingsId"><img src="~/images/toppings/@item.ToppingsId-.png" /></label>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 6%;margin-bottom: -6%;" class="title-content text-center">
+            <h3 class="title-big">Who's the order for</h3>
+        </div>
+
+        @*Customer Details*@
+        <div class="py-5">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+                    <div class="card">
+                        <div class="form-group">
+                            <span>Name <span style="color:red">*</span></span>
+                            <input type="text" id="fname" class="form-control" placeholder="First name is fine" name="FirstName" />
+                        </div>
+
+                        <div class="form-group">
+                            <span>Mobile <span style="color:red">*</span></span>
+                            <input type="text" maxlength="10" id="phone" class="form-control" placeholder="So we can contact you" name="Phone" />
+                        </div>
+
+                        <div class="form-group">
+                            <span>Delivery Address <span style="color:red">*</span></span>
+                            <textarea class="form-control" id="deliveryAddress" placeholder="To delivery your delicious pizza" name="DeliveryAddress" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:-6%;" class="title-content text-center">
+            <h3 class="title-big">How would you like to pay?</h3>
+        </div>
+        @*Payment method start*@
+
+        <div class="py-5">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+                    <div class="card ">
+                        <!-- Credit card form content -->
+                        <div class="tab-content">
+                            <!-- credit card info-->
+                            <div class="credit-card tab-pane fade show active pt-3">
+
+                                <div class="form-group">
+                                    <label for="username">
+                                        <h6>Card Owner <span style="color:red">*</span></h6>
+                                    </label> <input type="text" name="CardOwner" id="CardOwner" placeholder="Card Owner Name" required class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardNumber">
+                                        <h6>Card number <span style="color:red">*</span></h6>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" name="CardNumber" id="CardNumber" placeholder="Valid card number" class="form-control " required>
+                                        <div class="input-group-append"> <span class="input-group-text text-muted"> <i class="fab fa-cc-visa mx-1"></i> <i class="fab fa-cc-mastercard mx-1"></i> <i class="fab fa-cc-amex mx-1"></i> </span> </div>
+                                    
+                                    </div>
+                                    <span id="cardError" style="color:red">Enter a valid card number</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="form-group">
+                                            <label>
+                                                <span class="hidden-xs">
+                                                    <h6>Expiration Date <span style="color:red">*</span></h6>
+                                                </span>
+                                            </label>
+                                            <div class="input-group"> <input type="number" placeholder="MM" id="ExpDate" name="ExpDate" class="form-control" required> <input type="number" id="ExpMonth" placeholder="YY" name="ExpMonth" class="form-control" required> </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group mb-4">
+                                            <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
+                                                <h6>CVV <span style="color:red">*</span><i class="fa fa-question-circle d-inline"></i></h6>
+                                            </label> <input type="password" id="Cvv" maxlength="3" required name="Cvv" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div> <button type="submit" onclick="return validate(event);" class="subscribe btn btn-primary btn-block shadow-sm"> Confirm Payment </button></div>
+
+                            </div>
+                            <!-- End -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+<input type="hidden" id="orderNumber" value="@TempData["ordNumber"]" />
+@section Scripts {
+
+    }
+    <style>
+        body {
+            background: #f5f5f5
+        }
+
+        .rounded {
+            border-radius: 1rem
+        }
+
+        .nav-pills .nav-link {
+            color: #555
+        }
+
+            .nav-pills .nav-link.active {
+                color: white
+            }
+
+        .bold {
+            font-weight: bold
+        }
+    </style>
+
+    @*Payment method end *@
+
+
+                </div>
+
+    <style>
+        img {
+            max-width: 100%;
+        }
+
+        .preview {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .preview-pic {
+            -webkit-box-flex: 1;
+            -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
+            flex-grow: 1;
+        }
+
+        .preview-thumbnail.nav-tabs {
+            border: none;
+            margin-top: 15px;
+        }
+
+            .preview-thumbnail.nav-tabs li {
+                width: 18%;
+                margin-right: 2.5%;
+            }
+
+                .preview-thumbnail.nav-tabs li img {
+                    max-width: 100%;
+                    display: block;
+                }
+
+                .preview-thumbnail.nav-tabs li a {
+                    padding: 0;
+                    margin: 0;
+                }
+
+                .preview-thumbnail.nav-tabs li:last-of-type {
+                    margin-right: 0;
+                }
+
+        .tab-content {
+            overflow: hidden;
+        }
+
+            .tab-content img {
+                width: 100%;
+                -webkit-animation-name: opacity;
+                animation-name: opacity;
+                -webkit-animation-duration: .3s;
+                animation-duration: .3s;
+            }
+
+        .card {
+            margin-top: 50px;
+            padding: 3em;
+            line-height: 1.5em;
+        }
+
+
+        .details {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .product-title, .price, .sizes, .colors {
+            text-transform: UPPERCASE;
+            font-weight: bold;
+        }
+
+            .checked, .price span {
+                color: #ff9f1a;
+            }
+
+        .product-title, .rating, .product-description, .price, .vote, .sizes {
+            margin-bottom: 15px;
+        }
+
+        .product-title {
+            margin-top: 0;
+        }
+
+
+
+        /*CheckBox*/
+
+
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            display: inline-block;
+        }
+
+        input[type="checkbox"][id^="myCheckbox+"] {
+            display: none;
+        }
+
+        input[type="radio"][id^="myCheckbox+"] {
+            display: none;
+        }
+
+        .label {
+            border: 1px solid #fff;
+            padding: 10px;
+            display: block;
+            position: relative;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+            .label:before {
+                background-color: white;
+                color: white;
+                content: " ";
+                display: block;
+                border-radius: 50%;
+                border: 1px solid grey;
+                position: absolute;
+                top: -5px;
+                left: -5px;
+                width: 25px;
+                height: 25px;
+                text-align: center;
+                line-height: 28px;
+                transition-duration: 0.4s;
+                transform: scale(0);
+            }
+
+            .label img {
+                height: 100px;
+                width: 100px;
+                transition-duration: 0.2s;
+                transform-origin: 50% 50%;
+            }
+
+        :checked + .label {
+            border-color: #ddd;
+        }
+
+            :checked + .label:before {
+                content: "✓";
+                background-color: grey;
+                transform: scale(1);
+            }
+
+            :checked + .label img {
+                transform: scale(0.9);
+                /* box-shadow: 0 0 5px #333; */
+                z-index: -1;
+            }
+
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            //alert("sadas");
+            $("#cardError").hide();
+            if ($('#orderNumber').val() != "") {
+
+                swal({
+                    title: "Wow!",
+                    text: "Your order has been placed! Order # " + $('#orderNumber').val(),
+                    type: "success"
+                }).then(function () {
+                    window.location = "/Status";
+                });
+            }
+
+            $("#Qty").keyup(function (e) {
+                if ($('#Qty').val() != "") {
+                    if ($('#Qty').val() <= 0) {
+                        console.log($(this).val());
+                        swal("warning", "Minimum order is 1", "error");
+                    }
+                    else if ($(this).val() > 10) {
+                        swal("warning", "You cannot order more than 10", "error");;
+                    }
+                }
+            });
+
+
+            $("#CardNumber").focusout(function () {
+                //isCreditCard retuns boolean
+                if ($("#CardNumber").isCreditCard()) {
+                    console.log('corret');
+                    $("#cardError").hide(1000);
+                }
+                else {
+                    $("#cardError").show(1000);
+                }
+
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+        //function minMax(){
+        //    var qty = document.getElementById("Qty");
+        //    if(qty <= 0)
+        //    {
+        //        console.log(qty);
+        //    }
+        //}
+
+
+        function validate(event) {
+            event.preventDefault();
+            swal({
+                title: "Are you sure you want to place the order?",
+                text: "Once placed, it cannot be cancelled!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+                    if ($("#fname").val() == "" || $("#phone").val() == "" || $("#deliveryAddress").val() == "") {
+                        swal("Missing!", "Please fill all the details", "error");
+                        return false
+                    } else if ($("#CardOwner").val() == "" || $("#CardNumber").val() == "" || $("#ExpDate").val() == "" || $("#ExpMonth").val() == "" || $("#Cvv").val() == "") {
+                        swal("Missing!", "Please enter your Card Details", "error");
+                        return false
+                    } else {
+                        $("#placeorderForm").submit();
+                        return true
+                    }
+                } else {
+                    swal("Cancelled", "You have cancelled the order!", "error");
+                }
+            });
+        }
+    </script>
